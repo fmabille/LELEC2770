@@ -264,7 +264,7 @@ class evaluator:
                 """ @student
                 evaluate_garbled_gate() has no return value (and it is not suppose to have one)
                 """
-                circuit_outputs[gate.gate_id] = evaluate_garbled_gate(gate)
+                circuit_outputs[gate.gate_id] = gate.output_value#evaluate_garbled_gate(gate)
         ##### Complete here #####
         #
         # evaluate the garbled circuit here and store the result for the output gates in circuit_outputs
@@ -279,9 +279,6 @@ class evaluator:
         for i in self.myinputs:
             c = garbler.oblivious_transfer(i,self.OT_receiver.challenge(self.myinputs[i]),self.OT_receiver.pk)
             my_input_keys[i] = self.OT_receiver.decrypt_response(c[0],c[1],self.myinputs[i])
-            """ @student
-                your method is correct. Except that decrypt_response() takes argument in a different order in the original file.
-            """
 
         ##### Complete here #####
         #
