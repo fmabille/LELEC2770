@@ -61,3 +61,9 @@ def k_anonymity(lst):
     return value
 
 print(k_anonymity(read_csv_with_modif()))
+
+
+# Distorsion -> quantité de cassage de la base de donnée
+# Possibilité de casser la base de donnée mais il faut faire attention à l'utilité. Trade off between utility and privacy
+# Car si on privatise bien la db, utilté énorme et l'inverse
+# Du coup "juste-milieu"
