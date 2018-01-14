@@ -218,13 +218,12 @@ class evaluator:
                  return key.rep_byt_str
              else :
                  return None
+
         def evaluate_garbled_gate(gate):
             if gate.gate_0.output_value == None:
                 evaluate_garbled_gate(gate.gate_0)
             if gate.gate_1.output_value == None:
                 evaluate_garbled_gate(gate.gate_1)
-
-            print(gate.gate_id)
 
             for i in garbled_table[gate.gate_id]:
                 """ @student
@@ -234,18 +233,22 @@ class evaluator:
                 To decrypt i, you have to use the keys that are the outputs of the gate_0, and gate_1.
                 Only one of the four decryption will pass the check_decryption method, the three others will
                 return None. You must store the result in the output_value of the gate.
-
                 """
-                print(i)
-                print(check_decryption(i))
+                d = gate.gate_0.output_value.decrypt(i)
+                e = gate.gate_1.output_value.decrypt(d)
+                if check_decryption(e) is not None:
+                    if gate.is_circuit_output:
+                        gate.output_value = check_decryption(e)
+                    else:
+                        gate.output_value = AES_key(value=e,typeofvalue='bytstr')
 
-            gate.output_value = gate.loc_eval(gate_0.output_value, gate_1.output_value)
-                """ @student
-                evaluate_garbled_gate() has no return value (and it is not suppose to)
-                either the gate is an output gate and then the output is the decryption of one of the garbled_table element
-                either the gate is an internal gate and then the output is an AES_key thus
-                gate.output_value = AES_key(value=d,typeofvalue='bytstr') where d is the (second) decryption
-                """
+            #gate.output_value = AES_key(value=d,typeofvalue='bytstr')
+            """ @student
+            evaluate_garbled_gate() has no return value (and it is not suppose to)
+            either the gate is an output gate and then the output is the decryption of one of the garbled_table element
+            either the gate is an internal gate and then the output is an AES_key thus
+            gate.output_value = AES_key(value=d,typeofvalue='bytstr') where d is the (second) decryption
+            """
             ##### Complete here #####
             #
             # evaluate a garbled_gate and store the result in gate.output_value
@@ -264,6 +267,7 @@ class evaluator:
                 """ @student
                 evaluate_garbled_gate() has no return value (and it is not suppose to have one)
                 """
+                evaluate_garbled_gate(gate)
                 circuit_outputs[gate.gate_id] = gate.output_value#evaluate_garbled_gate(gate)
         ##### Complete here #####
         #
